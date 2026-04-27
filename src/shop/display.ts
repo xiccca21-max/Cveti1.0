@@ -19,6 +19,24 @@ export function formatPriceRub(value: number | null): string {
   return `${new Intl.NumberFormat("ru-RU").format(Math.round(value))} ₽`;
 }
 
+/** Две строки цен под прайс-лист: основная и вторая (напр. с учётом наценки). */
+export function formatCatalogPricePair(priceRub: number | null): {
+  lineBlack: string;
+  lineRed: string;
+} {
+  if (priceRub === null || Number.isNaN(priceRub)) {
+    return { lineBlack: "—", lineRed: "по запросу" };
+  }
+  const a = Math.round(priceRub);
+  const b = Math.round(a * 1.08);
+  const fmt = (n: number) =>
+    new Intl.NumberFormat("ru-RU", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(n);
+  return { lineBlack: fmt(a), lineRed: fmt(b) };
+}
+
 export function shopProductToDisplay(p: ShopProduct): CatalogDisplayProduct {
   return {
     id: p.id,

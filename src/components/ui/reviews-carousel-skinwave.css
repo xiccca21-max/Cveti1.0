@@ -1,0 +1,382 @@
+/* SKINWAVE-style reviews carousel — scoped, акцент «кактус» (приглушённый зелёный) */
+.skinwave-reviews {
+  --sw-bg: transparent;
+  --sw-bg-card: #ffffff;
+  --sw-border: #e2e8e0;
+  --sw-text: #1e293b;
+  --sw-text-sec: #64748b;
+  --sw-text-muted: #94a3b8;
+  --sw-accent: #5c8a5e;
+  --sw-accent-h: #4a7350;
+  --sw-accent-soft: rgba(92, 138, 94, 0.12);
+  --sw-accent-glow: rgba(92, 138, 94, 0.28);
+  --sw-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --sw-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.06), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --sw-radius-lg: 16px;
+  padding: 4px 0 12px;
+  background: transparent;
+}
+
+.skinwave-reviews .carousel {
+  --slide-w: min(400px, 92vw);
+  --offset-near: min(420px, 48vw);
+  --offset-far: min(740px, 85vw);
+  position: relative;
+  padding: 6px 0 36px;
+  outline: none;
+}
+
+.skinwave-reviews .carousel__viewport {
+  position: relative;
+  height: 260px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.skinwave-reviews .carousel__slide {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--slide-w);
+  transform: translate(-50%, -50%) scale(0.6);
+  opacity: 0;
+  z-index: 1;
+  pointer-events: none;
+  filter: blur(4px);
+  transition:
+    transform 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+    filter 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.skinwave-reviews .carousel__slide.is-active {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  z-index: 5;
+  pointer-events: auto;
+  filter: blur(0);
+}
+
+.skinwave-reviews .carousel__slide.is-active .review-card {
+  border-color: transparent;
+  box-shadow:
+    0 8px 32px color-mix(in srgb, var(--av1, var(--sw-accent)) 18%, transparent),
+    var(--sw-shadow-lg);
+}
+
+.skinwave-reviews .carousel__slide.is-prev {
+  transform: translate(calc(-50% - var(--offset-near)), -50%) scale(0.88);
+  opacity: 0.55;
+  z-index: 4;
+  pointer-events: auto;
+  cursor: pointer;
+  filter: blur(1.5px);
+}
+
+.skinwave-reviews .carousel__slide.is-next {
+  transform: translate(calc(-50% + var(--offset-near)), -50%) scale(0.88);
+  opacity: 0.55;
+  z-index: 4;
+  pointer-events: auto;
+  cursor: pointer;
+  filter: blur(1.5px);
+}
+
+.skinwave-reviews .carousel__slide.is-far-prev {
+  transform: translate(calc(-50% - var(--offset-far)), -50%) scale(0.72);
+  opacity: 0.25;
+  z-index: 3;
+  pointer-events: auto;
+  cursor: pointer;
+  filter: blur(3px);
+}
+
+.skinwave-reviews .carousel__slide.is-far-next {
+  transform: translate(calc(-50% + var(--offset-far)), -50%) scale(0.72);
+  opacity: 0.25;
+  z-index: 3;
+  pointer-events: auto;
+  cursor: pointer;
+  filter: blur(3px);
+}
+
+.skinwave-reviews .review-card {
+  position: relative;
+  background: var(--sw-bg-card);
+  border: 1px solid var(--sw-border);
+  border-radius: var(--sw-radius-lg);
+  padding: 28px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  user-select: none;
+  overflow: hidden;
+}
+
+.skinwave-reviews .review-card__quote {
+  position: absolute;
+  top: -8px;
+  right: 16px;
+  font-size: 96px;
+  font-family: Georgia, serif;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--av1, var(--sw-accent)), var(--av2, #7cb87d));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.skinwave-reviews .carousel__slide.is-active .review-card {
+  border-color: transparent;
+  background-clip: padding-box;
+}
+
+.skinwave-reviews .carousel__slide.is-active .review-card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--review-glow-angle, 0deg),
+    transparent 0%,
+    transparent 25%,
+    var(--av1, var(--sw-accent)) 40%,
+    var(--av2, #7cb87d) 50%,
+    var(--av1, var(--sw-accent)) 60%,
+    transparent 75%,
+    transparent 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  animation: sw-reviewBorderGlow 4s linear infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@property --review-glow-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes sw-reviewBorderGlow {
+  to {
+    --review-glow-angle: 360deg;
+  }
+}
+
+.skinwave-reviews .review-card__header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.skinwave-reviews .review-card__avatar {
+  position: relative;
+  overflow: hidden;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--av1, var(--sw-accent)), var(--av2, #7cb87d));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--av1, var(--sw-accent)) 32%, transparent);
+}
+
+.skinwave-reviews .review-card__avatar-img {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.skinwave-reviews .review-card__avatar-letter {
+  position: relative;
+  z-index: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.skinwave-reviews .review-card__name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--sw-text);
+  text-decoration: none;
+}
+
+.skinwave-reviews .review-card__name:hover {
+  text-decoration: underline;
+  color: var(--sw-accent-h);
+}
+
+.skinwave-reviews .review-card__stars {
+  display: flex;
+  gap: 2px;
+  color: #7cb87d;
+  margin-top: 2px;
+}
+
+.skinwave-reviews .review-card__stars svg.dim {
+  opacity: 0.28;
+}
+
+.skinwave-reviews .review-card__text {
+  position: relative;
+  z-index: 1;
+  font-size: 14px;
+  color: var(--sw-text-sec);
+  line-height: 1.7;
+}
+
+.skinwave-reviews .review-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.skinwave-reviews .review-card__game {
+  display: inline-block;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--av1, var(--sw-accent));
+  background: color-mix(in srgb, var(--av1, var(--sw-accent)) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--av1, var(--sw-accent)) 22%, transparent);
+  border-radius: 20px;
+}
+
+.skinwave-reviews .review-card__link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--sw-text-sec);
+  background: var(--sw-bg-card);
+  border: 1px solid var(--sw-border);
+  border-radius: 20px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.skinwave-reviews .review-card__link-btn:hover {
+  color: var(--sw-accent-h);
+  border-color: var(--sw-accent);
+  background: var(--sw-accent-soft);
+}
+
+.skinwave-reviews .carousel__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(calc(-50% - 18px));
+  z-index: 10;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--sw-bg-card);
+  border: 1px solid var(--sw-border);
+  color: var(--sw-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--sw-shadow-sm);
+}
+
+.skinwave-reviews .carousel__arrow:hover {
+  border-color: var(--sw-accent);
+  color: var(--sw-accent-h);
+  box-shadow: 0 4px 16px var(--sw-accent-glow);
+}
+
+.skinwave-reviews .carousel__arrow:active {
+  transform: translateY(calc(-50% - 18px)) scale(0.92);
+}
+
+/* По краям контейнера карусели, с минимальным inset и safe-area на вырезах */
+.skinwave-reviews .carousel__arrow--prev {
+  left: max(6px, env(safe-area-inset-left, 0px));
+}
+
+.skinwave-reviews .carousel__arrow--next {
+  right: max(6px, env(safe-area-inset-right, 0px));
+}
+
+.skinwave-reviews .carousel__dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.skinwave-reviews .carousel__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: var(--sw-border);
+  cursor: pointer;
+  transition: all 0.3s;
+  padding: 0;
+}
+
+.skinwave-reviews .carousel__dot:hover {
+  background: var(--sw-text-muted);
+}
+
+.skinwave-reviews .carousel__dot.active {
+  background: var(--sw-accent);
+  width: 28px;
+  border-radius: 5px;
+  box-shadow: 0 0 8px var(--sw-accent-glow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skinwave-reviews .carousel__slide {
+    transition-duration: 0.01s;
+  }
+  .skinwave-reviews .carousel__dot {
+    transition-duration: 0.01s;
+  }
+  .skinwave-reviews .carousel__slide.is-active .review-card::before {
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .skinwave-reviews .carousel {
+    --offset-near: 280px;
+    --offset-far: 480px;
+  }
+  .skinwave-reviews .carousel__viewport {
+    height: 240px;
+  }
+  .skinwave-reviews .carousel__arrow {
+    width: 40px;
+    height: 40px;
+  }
+  .skinwave-reviews .carousel__slide.is-far-prev,
+  .skinwave-reviews .carousel__slide.is-far-next {
+    opacity: 0;
+    pointer-events: none;
+  }
+}

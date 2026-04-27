@@ -10,6 +10,8 @@ export default {
       fontFamily: {
         heading: ["'Instrument Serif'", "serif"],
         body: ["'Barlow'", "sans-serif"],
+        /** Журнальные заголовки (каталог) */
+        editorial: ["'Playfair Display'", "Georgia", "serif"],
       },
       colors: {
         background: "hsl(var(--background))",

@@ -6,6 +6,7 @@ import { CatalogPage } from "./pages/CatalogPage";
 import { ContactsPage } from "./pages/ContactsPage";
 import { HomePage } from "./pages/HomePage";
 import { OptPage } from "./pages/OptPage";
+import { ReviewsPage } from "./pages/ReviewsPage";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="bouquets" element={<BouquetsPage />} />
         <Route path="opt" element={<OptPage />} />
         <Route path="contacts" element={<ContactsPage />} />
+        <Route path="reviews" element={<ReviewsPage />} />
       </Route>
     </Routes>
   );

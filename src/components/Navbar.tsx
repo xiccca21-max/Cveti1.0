@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
-import { VK_URL } from "../config/site";
 
 const links = [
   { label: "Главная", to: "/" },
@@ -12,33 +11,34 @@ const links = [
 ] as const;
 
 const navItemClass =
-  "relative z-[1] rounded-full px-3 py-2 font-body text-sm font-medium text-foreground/90 transition hover:text-foreground";
+  "relative z-[1] rounded-full px-3 py-2 font-body text-sm font-medium text-neutral-900 transition hover:text-black";
 
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <header className="fixed top-4 left-0 right-0 z-50 px-8 lg:px-16">
-      <div className="relative mx-auto flex h-16 max-w-[1920px] items-center">
+      <div className="relative mx-auto flex h-14 max-w-[1920px] items-center sm:h-16">
         <Link
           to="/"
           aria-label="ЦВЕТИ — на главную"
-          className="header-logo-3d relative z-10 inline-flex shrink-0 items-center gap-3 rounded-full py-1.5 pl-1.5 pr-4 transition-transform duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_28px_rgba(0,0,0,0.18)]"
+          className="header-logo-3d relative z-10 inline-flex shrink-0 items-center rounded-full px-4 py-1.5 transition-transform duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_28px_rgba(0,0,0,0.18)]"
         >
-          <img
-            src="/logo-flower.png"
-            alt=""
-            className="relative z-[1] h-12 w-12 shrink-0 object-contain brightness-0 invert"
-            width={48}
-            height={48}
-          />
-          <span className="relative z-[1] font-heading text-xl font-semibold not-italic tracking-tight text-white md:text-2xl">
-            ЦВЕТИ
+          <span className="relative z-[1] inline-flex items-center gap-[2px] font-heading text-xl font-semibold not-italic tracking-tight text-black md:text-2xl">
+            <span>ЦВЕТИ</span>
+            <img
+              src="/logo-flower-mark.png"
+              alt=""
+              aria-hidden="true"
+              className="-ml-[2px] h-[2.15em] w-auto translate-y-[0.1em]"
+              loading="eager"
+              decoding="async"
+            />
           </span>
         </Link>
 
         <nav
-          className="header-nav-glass-3d absolute left-1/2 hidden -translate-x-1/2 flex-row items-center gap-1 rounded-full px-2 py-1.5 lg:flex"
+          className="header-nav-glass-3d absolute left-1/2 z-[1] hidden -translate-x-1/2 flex-row items-center gap-1 rounded-full px-2 py-1.5 lg:flex"
           aria-label="Основное меню"
         >
           {links.map(({ label, to }) => (
@@ -47,36 +47,30 @@ export function Navbar() {
               to={to}
               end={to === "/"}
               className={({ isActive }) =>
-                `${navItemClass} ${isActive ? "bg-white/15 text-foreground" : ""}`
+                `${navItemClass} ${isActive ? "bg-black/8 text-black" : ""}`
               }
             >
               {label}
             </NavLink>
           ))}
-          <a
-            href={VK_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            to="/reviews"
             className="relative z-[1] ml-1 inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1.5 font-body text-sm font-medium text-black shadow-[0_2px_8px_rgba(0,0,0,0.12),inset_0_1px_0_rgba(255,255,255,1)] transition hover:shadow-[0_4px_14px_rgba(0,0,0,0.18)]"
           >
-            Заказ в ВК
+            Отзывы
             <ArrowUpRight className="h-4 w-4 shrink-0" aria-hidden />
-          </a>
+          </Link>
         </nav>
 
         <button
           type="button"
-          className="header-nav-glass-3d relative z-20 ml-auto inline-flex h-11 w-11 items-center justify-center rounded-full text-foreground lg:hidden"
+          className="header-nav-glass-3d relative z-20 ml-auto inline-flex h-11 w-11 items-center justify-center rounded-full text-black lg:hidden"
           aria-expanded={menuOpen}
           aria-controls="mobile-nav"
           aria-label={menuOpen ? "Закрыть меню" : "Открыть меню"}
           onClick={() => setMenuOpen((v) => !v)}
         >
-          {menuOpen ? (
-            <X className="h-5 w-5" aria-hidden />
-          ) : (
-            <Menu className="h-5 w-5" aria-hidden />
-          )}
+          {menuOpen ? <X className="h-5 w-5" aria-hidden /> : <Menu className="h-5 w-5" aria-hidden />}
         </button>
       </div>
 
@@ -96,22 +90,22 @@ export function Navbar() {
                 end={to === "/"}
                 onClick={() => setMenuOpen(false)}
                 className={({ isActive }) =>
-                  `rounded-2xl px-4 py-3 font-body text-base font-medium ${isActive ? "bg-white/20 text-foreground" : "text-foreground/90"}`
+                  `rounded-2xl px-4 py-3 font-body text-base font-medium ${
+                    isActive ? "bg-black/5 text-black" : "text-neutral-900"
+                  }`
                 }
               >
                 {label}
               </NavLink>
             ))}
-            <a
-              href={VK_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/reviews"
               onClick={() => setMenuOpen(false)}
               className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-white px-4 py-3 font-body text-sm font-medium text-black"
             >
-              Заказ в ВК
+              Отзывы
               <ArrowUpRight className="h-4 w-4 shrink-0" aria-hidden />
-            </a>
+            </Link>
           </nav>
         </div>
       ) : null}
